@@ -15,5 +15,8 @@
   "bugs": {
     "url": "https://github.com/zy13/node-note/issues"
   },
-  "homepage": "https://github.com/zy13/node-note#readme"
+  "homepage": "https://github.com/zy13/node-note#readme",
+  "devDependencies": {
+    "nodemon": "^2.0.7"
+  }
 }
