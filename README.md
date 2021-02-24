@@ -113,7 +113,7 @@ mycopy('index.html','test.html')
 - 删除文件：fs.unlinkSync('2.txt')
 - 复制文件：fs.copySync('index.html', 'myIndex.html')
 
-## 用Node.js搭建一个基础的webServer
+## 练习：用Node.js搭建一个基础的webServer
 
 ### 要求
 
