@@ -112,3 +112,38 @@ mycopy('index.html','test.html')
 - 修改文件名称：fs.renameSync('1.txt','2.txt')
 - 删除文件：fs.unlinkSync('2.txt')
 - 复制文件：fs.copySync('index.html', 'myIndex.html')
+
+## 用Node.js搭建一个基础的webServer
+
+### 要求
+
+* 1、使用node.js的http模块搭建一个webServer项目
+  * 1-1、端口号为8888
+* 2、访问http://localhost:8888/public/index.html返回public目录下的index.html内容
+  * 2-1、项目目录下创建一个public目录
+  * 2-2、public下创建一个index.html文件（文件内容不限）
+* 3、访问http://localhost:8888/quote随机返回一句毒鸡汤
+
+### 毒鸡汤
+
+const quotes = [
+
+'虽然我个子矮，但我发际线高啊！',
+
+'有些事情做不完，就留到明天做吧。运气好的话，明天死了就不用做了。',
+
+'善良没用，你得漂亮。',
+
+'好好活下去 每天都有新打击。',
+
+'活着的时候把自己搞得好看一点，这样你就不会死得太难看。',
+
+'世上无难事 只要肯放弃。',
+
+'加油，你是最胖的！' ];
+
+
+
+
+
+

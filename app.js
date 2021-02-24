@@ -1,74 +1,53 @@
-const http = require('http') // 引入http模块
-const fs = require('fs') // 引入fs模块
-const mimes = require('./mime.json') // 引入mime
-const nunjucks = require('nunjucks') // 引入模板引擎
+const http = require('http')
+const fs = require('fs')
+const nunjucks = require('nunjucks')
 
-// let res = nunjucks.renderString('hello {{name}}', {name: 'james'})
-// console.log(res)
+const server = http.createServer()
 
-// 渲染模板文件，进行模板配置
+const quotes = [
+  '虽然我个子矮，但我发际线高啊！',
+  '有些事情做不完，就留到明天做吧。运气好的话，明天死了就不用做了。',  
+  '善良没用，你得漂亮。',  
+  '好好活下去 每天都有新打击。',  
+  '活着的时候把自己搞得好看一点，这样你就不会死得太难看。',  
+  '世上无难事 只要肯放弃。',  
+  '加油，你是最胖的！' 
+]
+
 nunjucks.configure('views', {
   autoescape: true,
   watch: true,
-  noCache: true // 开发过程不需要做环境
+  noCache: true
 })
 
-const server = http.createServer() // 创建http.Sever对象
-
-let users = [
-  {id: 1, name: 'zy1'},
-  {id: 2, name: 'zy2'}
-]
-
-// 注册请求回调函数
 server.on('request', (req, res) => {
   let { url } = req
   let content = ''
 
-  // 如果应用中动、静态资源同时存在，
-  // 那么最好把它们的访问规则区分开来
+  // 静态资源
   if(url.startsWith('/public')) {
+    console.log(url)
     try {
-      let ext = url.substring(url.lastIndexOf('.'))
-      let mime = mimes[ext]
-      url = url.replace(/^\/public/, '')
-      content = fs.readFileSync(`./assets${url}`).toString()
-      // 设置响应头，响应数据的类型
-      // res.setHeader('Content-Type', mime)
-      // 或者
-      res.writeHead(200, 'ok', {
-        'Content-Type': mime
-      })
+      content = fs.readFileSync(`.${url}`).toString()
     } catch (e) {
-      content = 'Not Found'
+      content = 'not fond'
       res.statusCode = 404
     }
-  } else {
-    if(url === '/getdate') {
-      res.writeHead(200,{
-        'content-type': 'text/html;charset=utf-8'
+  } else { 
+    // 动态资源
+    if (url === '/quote') {
+      const quote = quotes[Math.floor(Math.random()*quotes.length)]
+      content = nunjucks.render('quote.html', {
+        quote
       })
-      content = `系统时间：${new Date()}`
+      res.statusCode = 200
+    } else {
+      content = 'not fond'
+      res.statusCode = 404
     }
-    if(url === '/users') {
-      res.writeHead(200,{
-        'content-type': 'text/html;charset=utf-8'
-      })
-      content = nunjucks.render('users.html', {
-        title: '用户列表',
-        users
-      })
-      console.log(content)
-    }
-  }  
-
+  }
   res.write(content)
-  res.end() // 写完数据
+  res.end()
 })
 
-// 监听网络（网卡IP）
-server.listen(8888, 'localhost', () => {
-  console.log('服务器请求成功！')
-})
-
-
+server.listen(8888)
